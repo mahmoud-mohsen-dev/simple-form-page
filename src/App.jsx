@@ -25,7 +25,6 @@ function App() {
   let newsletter
    function handleSubmit (event){
     event.preventDefault()
-    // console.log(formData.isChecked)
     const {email, password, confirmPassword, isChecked} = formData
     
     if (password === confirmPassword){
@@ -51,7 +50,6 @@ function App() {
     })
    }
    const display = !!(formData.email || formData.password || formData.confirmPassword || formData.isChecked)
-   console.log(display)
 
   return (
     <form className="form--sign_up" onSubmit={handleSubmit}>
