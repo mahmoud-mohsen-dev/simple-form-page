@@ -6,13 +6,14 @@ function App() {
       email: "",
       password: "",
       confirmPassword: "",
-      isChecked: false
+      isChecked: false,
+      result: "",
+      newsletter: ""
    })
 
     
    function handleChange (event){
     const { name, value, type, checked } = event.target;
-    console.log(type)
     setFormData(prevFormData => {
       return {
         ...prevFormData,
@@ -20,21 +21,37 @@ function App() {
       }
     })
    }
-
+  let result 
+  let newsletter
    function handleSubmit (event){
     event.preventDefault()
-    console.log(formData)
-    if (formData.password === formData.confirmPassword){
-      console.log("Successfully signed up")
+    // console.log(formData.isChecked)
+    const {email, password, confirmPassword, isChecked} = formData
+    
+    if (password === confirmPassword){
+      if (email !== '' && password !== '' && confirmPassword !== ''){
+        result = "Successfully signed up";
+        isChecked
+          ? (newsletter = "Thanks for signing up for our newsletter!")
+          : "";
+      } else {
+        result = "Please fill the Form"
+      }
     }
     else {
-      console.log("passwords do not match")
-      return
+      result = "passwords do not match"
     }
 
-    formData.isChecked
-        ? console.log("Thanks for signing up for our newsletter!") : ''
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        result: result,
+        newsletter: newsletter
+      }
+    })
    }
+   const display = !!(formData.email || formData.password || formData.confirmPassword || formData.isChecked)
+   console.log(display)
 
   return (
     <form className="form--sign_up" onSubmit={handleSubmit}>
@@ -45,7 +62,6 @@ function App() {
         onChange={handleChange}
         value={formData.email}
       />
-      
 
       <input
         type="password"
@@ -71,10 +87,48 @@ function App() {
           onChange={handleChange}
           checked={formData.isChecked}
         />
-        <label htmlFor="join">I want to join the newsletter</label>
+        <label htmlFor="join">I want to join the news letter</label>
       </div>
 
       <button>Sign up</button>
+      {display && (
+        <div className="result">
+          {formData.email && (
+            <>
+              <h4>Email</h4>
+              <span>{formData.email}</span>
+            </>
+          )}
+
+          {formData.password && (
+            <>
+              <h4>Password</h4>
+              <span>{formData.password}</span>
+            </>
+          )}
+
+          {formData.confirmPassword && (
+            <>
+              <h4>confirm Password</h4>
+              <span>{formData.confirmPassword}</span>
+            </>
+          )}
+
+          {formData.isChecked && (
+            <>
+              <h4>Joined news letter</h4>
+              <span>{formData.isChecked ? "Yes" : "No"}</span>
+            </>
+          )}
+
+          {formData.result && (
+            <>
+              <h4 className='output'>{formData.result}</h4>
+              <span>{formData.newsletter}</span>
+            </>
+          )}
+        </div>
+      )}
     </form>
   );
 }
